@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="ChatonlineDB" default="run" basedir=".">
+    <description>Builds, tests, and runs the project ChatonlineDB.</description>
+    <import file="nbproject/build-impl.xml"/>
+
+    <!-- Định nghĩa các thư mục và thuộc tính -->
+    <property name="src.dir" value="src"/>
+    <property name="build.dir" value="build"/>
+    <property name="classes.dir" value="${build.dir}/classes"/>
+    <property name="lib.dir" value="lib"/>
+    <property name="jar.dir" value="${build.dir}/jar"/>
+    <property name="main-class" value="com.mycompany.chat.ServerFrame"/> <!-- Có thể thay bằng LoginFrame -->
+
+    <!-- Đường dẫn tới các thư viện -->
+    <path id="classpath">
+        <pathelement path="${classes.dir}"/>
+        <fileset dir="${lib.dir}">
+            <include name="**/*.jar"/>
+        </fileset>
+    </path>
+
+    <!-- Target: Khởi tạo thư mục -->
+    <target name="init">
+        <mkdir dir="${build.dir}"/>
+        <mkdir dir="${classes.dir}"/>
+        <mkdir dir="${jar.dir}"/>
+    </target>
+
+    <!-- Target: Xóa thư mục build -->
+    <target name="clean" description="Clean up build directories">
+        <delete dir="${build.dir}"/>
+    </target>
+
+    <!-- Target: Biên dịch mã nguồn -->
+    <target name="compile" depends="init" description="Compile the source files">
+        <javac srcdir="${src.dir}" destdir="${classes.dir}" includeantruntime="false">
+            <classpath refid="classpath"/>
+        </javac>
+    </target>
+
+    <!-- Target: Tạo file JAR -->
+    <target name="jar" depends="compile" description="Build JAR file">
+        <jar destfile="${jar.dir}/${ant.project.name}.jar" basedir="${classes.dir}">
+            <manifest>
+                <attribute name="Main-Class" value="${main-class}"/>
+            </manifest>
+            <fileset dir="${lib.dir}" includes="*.jar"/>
+        </jar>
+    </target>
+
+    <!-- Target: Chạy ứng dụng -->
+    <target name="run" depends="compile" description="Run the application">
+        <java classname="${main-class}" fork="true">
+            <classpath refid="classpath"/>
+        </java>
+    </target>
+
+    <!-- Các target bổ sung từ build-impl.xml có thể được giữ nguyên hoặc ghi đè nếu cần -->
+    <target name="-pre-init"/>
+    <target name="-post-init"/>
+    <target name="-pre-compile"/>
+    <target name="-post-compile"/>
+    <target name="-pre-jar"/>
+    <target name="-post-jar"/>
+    <target name="-post-clean"/>
+
+</project>
